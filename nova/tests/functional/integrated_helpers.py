@@ -77,6 +77,7 @@ class _IntegratedTestBase(test.TestCase):
     # value of False here is only temporary while we update the existing
     # functional tests to use Neutron.
     USE_NEUTRON = False
+    USE_CAST_AS_CALL = True
 
     def setUp(self):
         super(_IntegratedTestBase, self).setUp()
@@ -91,7 +92,8 @@ class _IntegratedTestBase(test.TestCase):
 
         nova.tests.unit.image.fake.stub_out_image_service(self)
 
-        self.useFixture(cast_as_call.CastAsCall(self))
+        if self.USE_CAST_AS_CALL:
+            self.useFixture(cast_as_call.CastAsCall(self))
         placement = self.useFixture(func_fixtures.PlacementFixture())
         self.placement_api = placement.api
 
